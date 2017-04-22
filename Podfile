@@ -6,5 +6,7 @@ target 'RealmChat' do
   use_frameworks!
 
   # Pods for RealmChat
-
+  pod 'RealmSwift', '~> 2.6'
+  pod 'SlackTextViewController', '~> 1.9'
+  pod 'Firebase', '~> 3.16'
 end
