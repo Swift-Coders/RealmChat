@@ -16,11 +16,26 @@ class ViewController: SLKTextViewController {
         return super.tableView!
     }
     
-    var comments = [Comment]()
+    private var list: CommentList!
+    
+    var comments: List<Comment> {
+        return list.items
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        let realm = try! Realm()
+        
+        if realm.isEmpty {
+            realm.safeWrite { realm in
+                let list = CommentList()
+                realm.add(list)
+            }
+        }
+        
+        list = realm.objects(CommentList.self).first!
         
         self.navigationItem.title = "Comments"
         
@@ -59,38 +74,16 @@ extension ViewController {
     }
     
     override func didPressRightButton(_ sender: Any?) {
-        self.textView.refreshFirstResponder()
-        
+        textView.refreshFirstResponder()
+        guard let text = textView.text else { return }
         let row = comments.count
-        items.insert(Item(), at: row)
+        comments.realm?.safeWrite { realm in
+            let comment = Comment(text: text)
+            comments.insert(comment, at: row)
+        }
         let indexPath = IndexPath(row: row, section: 0)
-        tableView.insertRows(at: [indexPath], with: .automatic)
-        cell = tableView.cellForRow(at: indexPath) as! TableViewCell<Item>
-
-        
-//        guard let text = viewController.textView.text else { return }
-//        let comment = RLMComment()
-//        comment.text = text
-//        comment.user = RLMUser.myUser()
-//        
-//        let indexPath = IndexPath(row: self.comments.count, section: 0)
-//        
-//        self.comments.append(comment)
-//        
-//        viewController.tableView.beginUpdates()
-//        viewController.tableView.insertRows(at: [indexPath], with: .bottom)
-//        viewController.tableView.endUpdates()
-//        
-//        viewController.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-//        
-//        SHTNetworkManager.postComment(article: self.article, user: RLMUser.myUser(), text: text) { json, error in }
-        
-        
-        
-//        try! item.realm?.write {
-//            item.completed = completed
-//        }
-        
+        tableView.insertRows(at: [indexPath], with: .bottom)
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         super.didPressRightButton(sender)
     }
     
