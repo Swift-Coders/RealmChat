@@ -8,5 +8,6 @@ target 'RealmChat' do
   # Pods for RealmChat
   pod 'RealmSwift', '~> 2.6'
   pod 'SlackTextViewController', '~> 1.9'
-  pod 'Firebase', '~> 3.16'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Database'
 end

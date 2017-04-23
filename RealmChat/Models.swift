@@ -8,20 +8,11 @@
 
 import RealmSwift
 
-protocol ListPresentable {
-    associatedtype Item: Object, CellPresentable
-    var items: List<Item> { get }
-}
-
-protocol CellPresentable {
-    var text: String { get set }
-}
-
-final class CommentList: Object, ListPresentable {
+final class CommentList: Object {
     let items = List<Comment>()
 }
 
-final class Comment: Object, CellPresentable {
+final class Comment: Object {
     dynamic var id = NSUUID().uuidString
     dynamic var text = ""
     dynamic var createdAt = Date()

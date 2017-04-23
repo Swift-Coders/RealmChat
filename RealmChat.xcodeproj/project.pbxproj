@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8B90E5DF1EAAF86100503A42 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B90E5DE1EAAF86100503A42 /* Constants.swift */; };
-		8BA68A3A1EAAE14A000A067D /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA68A391EAAE14A000A067D /* Cell.swift */; };
+		8B69B9A91EAC32FF00899BEE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8B69B9A81EAC32FF00899BEE /* GoogleService-Info.plist */; };
+		8B75A8741EAD6239002F359D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B75A8731EAD6239002F359D /* DataManager.swift */; };
 		8BA68A3E1EAAE16F000A067D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA68A3D1EAAE16F000A067D /* Models.swift */; };
 		8BA68A401EAAE1D1000A067D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA68A3F1EAAE1D1000A067D /* Extensions.swift */; };
 		8BC3A12E1EAADE9600C9A3E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC3A12D1EAADE9600C9A3E6 /* AppDelegate.swift */; };
@@ -22,8 +22,8 @@
 /* Begin PBXFileReference section */
 		2624A688093244A14E0CB104 /* Pods-RealmChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RealmChat/Pods-RealmChat.debug.xcconfig"; sourceTree = "<group>"; };
 		54B22735C8011498C164E164 /* Pods-RealmChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-RealmChat/Pods-RealmChat.release.xcconfig"; sourceTree = "<group>"; };
-		8B90E5DE1EAAF86100503A42 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		8BA68A391EAAE14A000A067D /* Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		8B69B9A81EAC32FF00899BEE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8B75A8731EAD6239002F359D /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		8BA68A3D1EAAE16F000A067D /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		8BA68A3F1EAAE1D1000A067D /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8BC3A12A1EAADE9600C9A3E6 /* RealmChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealmChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,14 +79,14 @@
 			children = (
 				8BC3A12D1EAADE9600C9A3E6 /* AppDelegate.swift */,
 				8BC3A12F1EAADE9600C9A3E6 /* ViewController.swift */,
-				8BA68A391EAAE14A000A067D /* Cell.swift */,
 				8BA68A3D1EAAE16F000A067D /* Models.swift */,
-				8B90E5DE1EAAF86100503A42 /* Constants.swift */,
 				8BA68A3F1EAAE1D1000A067D /* Extensions.swift */,
+				8B75A8731EAD6239002F359D /* DataManager.swift */,
 				8BC3A1311EAADE9600C9A3E6 /* Main.storyboard */,
 				8BC3A1341EAADE9600C9A3E6 /* Assets.xcassets */,
 				8BC3A1361EAADE9600C9A3E6 /* LaunchScreen.storyboard */,
 				8BC3A1391EAADE9600C9A3E6 /* Info.plist */,
+				8B69B9A81EAC32FF00899BEE /* GoogleService-Info.plist */,
 			);
 			path = RealmChat;
 			sourceTree = "<group>";
@@ -163,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BC3A1381EAADE9600C9A3E6 /* LaunchScreen.storyboard in Resources */,
+				8B69B9A91EAC32FF00899BEE /* GoogleService-Info.plist in Resources */,
 				8BC3A1351EAADE9600C9A3E6 /* Assets.xcassets in Resources */,
 				8BC3A1331EAADE9600C9A3E6 /* Main.storyboard in Resources */,
 			);
@@ -224,11 +225,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BA68A401EAAE1D1000A067D /* Extensions.swift in Sources */,
+				8B75A8741EAD6239002F359D /* DataManager.swift in Sources */,
 				8BC3A1301EAADE9600C9A3E6 /* ViewController.swift in Sources */,
 				8BC3A12E1EAADE9600C9A3E6 /* AppDelegate.swift in Sources */,
-				8BA68A3A1EAAE14A000A067D /* Cell.swift in Sources */,
 				8BA68A3E1EAAE16F000A067D /* Models.swift in Sources */,
-				8B90E5DF1EAAF86100503A42 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
