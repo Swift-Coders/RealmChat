@@ -48,10 +48,16 @@ class ViewController: SLKTextViewController {
     func addNotifications() {
         FIRAuth.auth()?.signInAnonymously { user, error in
             guard let _ = user else { return }
-            FirebaseManager.shared.observeComments { _, id, data in
+            FirebaseManager.shared.observeComments { type, id, data in
                 let text = data["text"] as! String
                 let senderId = data["senderId"] as! String
-                RealmManager.shared.insert(id: id, text: text, senderId: senderId)
+                switch type {
+                case .childAdded:
+                    RealmManager.shared.appendComment(id: id, text: text, senderId: senderId)
+                case .childRemoved:
+                    RealmManager.shared.removeComment(id: id)
+                default: break
+                }
             }
         }
         
@@ -95,8 +101,10 @@ extension ViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let comment = comments[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
+        cell.textLabel?.numberOfLines = 0
         cell.textLabel?.text = comment.text
+        cell.detailTextLabel?.text = comment.from?.id
         cell.selectionStyle = .none
         cell.transform = tableView.transform
         return cell

@@ -37,13 +37,20 @@ class RealmManager {
         }
     }
     
-    func insert(id: String, text: String, senderId: String) {
+    func appendComment(id: String, text: String, senderId: String) {
         guard let realm = comments.realm else { return }
         if comments.filter("id == %@", id).isEmpty {
             try! realm.write {
                 let comment = Comment(id: id, text: text, senderId: senderId)
                 comments.append(comment)
             }
+        }
+    }
+    
+    func removeComment(id: String) {
+        guard let realm = comments.realm, let comment = comments.filter("id == %@", id).first else { return }
+        try! realm.write {
+            realm.delete(comment)
         }
     }
     

@@ -13,12 +13,18 @@ class FirebaseManager {
     static let shared = FirebaseManager()
     
     private lazy var commentRef: FIRDatabaseReference = FIRDatabase.database().reference().child("comments")
-    private var commentRefHandle: FIRDatabaseHandle?
+    
+    private var commentAddedRefHandle: FIRDatabaseHandle?
+    private var commentRemovedRefHandle: FIRDatabaseHandle?
     
     func observeComments(handler: @escaping (FIRDataEventType, String, [String: AnyObject]) -> Void) {
-        commentRefHandle = commentRef.observe(.childAdded, with: { snapshot in
+        commentAddedRefHandle = commentRef.observe(.childAdded, with: { snapshot in
             guard let data = snapshot.value as? [String: AnyObject] else { return }
             handler(.childAdded, snapshot.key, data)
+        })
+        commentRemovedRefHandle = commentRef.observe(.childRemoved, with: { snapshot in
+            guard let data = snapshot.value as? [String: AnyObject] else { return }
+            handler(.childRemoved, snapshot.key, data)
         })
     }
     
