@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         FIRApp.configure()
-        FIRAuth.auth()?.signInAnonymously { user, error in }
         
         UINavigationBar.appearance().backgroundColor = .white
         UINavigationBar.appearance().setBackgroundImage(UIImage(color: .white), for: .default)

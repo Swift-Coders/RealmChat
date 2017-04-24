@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 extension UIColor {
     
@@ -28,14 +27,6 @@ extension UIImage {
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         self.init(cgImage: image!.cgImage!)
-    }
-    
-}
-
-extension Realm {
-    
-    func safeWrite(_ block: (Realm) -> ()) {
-        try! write { block(self) }
     }
     
 }

@@ -9,6 +9,7 @@
 import UIKit
 import SlackTextViewController
 import RealmSwift
+import FirebaseAuth
 
 class ViewController: SLKTextViewController {
     
@@ -16,26 +17,13 @@ class ViewController: SLKTextViewController {
         return super.tableView!
     }
     
-    private var list: CommentList!
-    
     var comments: List<Comment> {
-        return list.items
+        return RealmManager.shared.comments
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        let realm = try! Realm()
-        
-        if realm.isEmpty {
-            realm.safeWrite { realm in
-                let list = CommentList()
-                realm.add(list)
-            }
-        }
-        
-        list = realm.objects(CommentList.self).first!
         
         self.navigationItem.title = "Comments"
         
@@ -54,6 +42,25 @@ class ViewController: SLKTextViewController {
         textView.backgroundColor = .white
         textView.layer.borderWidth = 0
         textView.placeholder = "Type a message"
+        
+        FIRAuth.auth()?.signInAnonymously { user, error in
+            guard let _ = user else { return }
+            FirebaseManager.shared.observeComments { data in
+                RealmManager.shared.postComment(text: data["text"] as! String)
+            }
+        }
+        
+        RealmManager.shared.observeComments { [unowned self] deletions, insertions, modifications in
+            self.tableView.beginUpdates()
+            self.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+            self.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+            self.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) }, with: .none)
+            self.tableView.endUpdates()
+            
+            if let row = insertions.first {
+                self.tableView.scrollToRow(at: IndexPath(row: row, section: 0), at: .bottom, animated: true)
+            }
+        }
     }
     
 }
@@ -67,15 +74,8 @@ extension ViewController {
     
     override func didPressRightButton(_ sender: Any?) {
         textView.refreshFirstResponder()
-        guard let text = textView.text else { return }
-        let row = comments.count
-        comments.realm?.safeWrite { realm in
-            let comment = Comment(text: text)
-            comments.insert(comment, at: row)
-        }
-        let indexPath = IndexPath(row: row, section: 0)
-        tableView.insertRows(at: [indexPath], with: .bottom)
-        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        guard let text = textView.text, let senderId = FIRAuth.auth()?.currentUser?.uid else { return }
+        FirebaseManager.shared.postComment(senderId: senderId, text: text)
         super.didPressRightButton(sender)
     }
     
