@@ -6,7 +6,6 @@
 //  Copyright © 2017 efremidze. All rights reserved.
 //
 
-import UIKit
 import SlackTextViewController
 import RealmSwift
 import FirebaseAuth
@@ -45,14 +44,19 @@ class ViewController: SLKTextViewController {
         addNotifications()
     }
     
+}
+
+// MARK: - Data
+extension ViewController {
+    
     func addNotifications() {
         FIRAuth.auth()?.signInAnonymously { user, error in
             guard let _ = user else { return }
             FirebaseManager.shared.observeComments { type, id, data in
-                let text = data["text"] as! String
-                let senderId = data["senderId"] as! String
                 switch type {
                 case .childAdded:
+                    let text = data["text"] as! String
+                    let senderId = data["senderId"] as! String
                     RealmManager.shared.appendComment(id: id, text: text, senderId: senderId)
                 case .childRemoved:
                     RealmManager.shared.removeComment(id: id)
@@ -104,7 +108,7 @@ extension ViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.text = comment.text
-        cell.detailTextLabel?.text = comment.from?.id
+        cell.detailTextLabel?.text = comment.senderId
         cell.selectionStyle = .none
         cell.transform = tableView.transform
         return cell
