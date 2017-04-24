@@ -42,10 +42,16 @@ class ViewController: SLKTextViewController {
         textView.layer.borderWidth = 0
         textView.placeholder = "Type a message"
         
+        addNotifications()
+    }
+    
+    func addNotifications() {
         FIRAuth.auth()?.signInAnonymously { user, error in
             guard let _ = user else { return }
-            FirebaseManager.shared.observeComments { data in
-                RealmManager.shared.postComment(text: data["text"] as! String)
+            FirebaseManager.shared.observeComments { _, id, data in
+                let text = data["text"] as! String
+                let senderId = data["senderId"] as! String
+                RealmManager.shared.insert(id: id, text: text, senderId: senderId)
             }
         }
         

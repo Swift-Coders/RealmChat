@@ -16,12 +16,13 @@ final class Comment: Object {
     dynamic var id = NSUUID().uuidString
     dynamic var text = ""
 //    dynamic var createdAt = Date()
-//    dynamic var from: User?
+    dynamic var from: User?
     
-    convenience init(id: String, text: String) {
+    convenience init(id: String, text: String, senderId: String) {
         self.init()
         self.id = id
         self.text = text
+        self.from = try! Realm().object(ofType: User.self, forPrimaryKey: senderId) ?? User(id: senderId)
     }
     
     override static func primaryKey() -> String? {
@@ -29,12 +30,17 @@ final class Comment: Object {
     }
 }
 
-//final class User: Object {
-//    dynamic var id = NSUUID().uuidString
+final class User: Object {
+    dynamic var id = NSUUID().uuidString
 //    dynamic var username: String = ""
 //    dynamic var profilePicture: String = ""
-//    
-//    override static func primaryKey() -> String? {
-//        return "id"
-//    }
-//}
+    
+    convenience init(id: String) {
+        self.init()
+        self.id = id
+    }
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+}

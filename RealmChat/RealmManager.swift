@@ -29,17 +29,20 @@ class RealmManager {
     
     private var token: NotificationToken?
     
-    func postComment(text: String) {
-        try! comments.realm?.write {
-            let comment = Comment(id: id, text: text)
-            comments.append(comment)
-        }
-    }
-    
     func observeComments(handler: @escaping (_ deletions: [Int], _ insertions: [Int], _ modifications: [Int]) -> Void) {
         token = comments.addNotificationBlock { changes in
             if case let .update(_, deletions, insertions, modifications) = changes {
                 handler(deletions, insertions, modifications)
+            }
+        }
+    }
+    
+    func insert(id: String, text: String, senderId: String) {
+        guard let realm = comments.realm else { return }
+        if comments.filter("id == %@", id).isEmpty {
+            try! realm.write {
+                let comment = Comment(id: id, text: text, senderId: senderId)
+                comments.append(comment)
             }
         }
     }
