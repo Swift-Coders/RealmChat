@@ -15,11 +15,12 @@ final class CommentList: Object {
 final class Comment: Object {
     dynamic var id = NSUUID().uuidString
     dynamic var text = ""
-    dynamic var createdAt = Date()
-    dynamic var from: User?
+//    dynamic var createdAt = Date()
+//    dynamic var from: User?
     
-    convenience init(text: String) {
+    convenience init(id: String, text: String) {
         self.init()
+        self.id = id
         self.text = text
     }
     
@@ -28,12 +29,12 @@ final class Comment: Object {
     }
 }
 
-final class User: Object {
-    dynamic var id = NSUUID().uuidString
-    dynamic var username: String = ""
-    dynamic var profilePicture: String = ""
-    
-    override static func primaryKey() -> String? {
-        return "id"
-    }
-}
+//final class User: Object {
+//    dynamic var id = NSUUID().uuidString
+//    dynamic var username: String = ""
+//    dynamic var profilePicture: String = ""
+//    
+//    override static func primaryKey() -> String? {
+//        return "id"
+//    }
+//}

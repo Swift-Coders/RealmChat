@@ -27,24 +27,19 @@ class RealmManager {
         return list.items
     }
     
-    private var notificationToken: NotificationToken?
+    private var token: NotificationToken?
     
     func postComment(text: String) {
         try! comments.realm?.write {
-            let comment = Comment(text: text)
+            let comment = Comment(id: id, text: text)
             comments.append(comment)
         }
     }
     
     func observeComments(handler: @escaping (_ deletions: [Int], _ insertions: [Int], _ modifications: [Int]) -> Void) {
-        notificationToken = comments.addNotificationBlock { changes in
-            switch changes {
-            case .initial(let value):
-                break
-            case .update(let value, let deletions, let insertions, let modifications):
+        token = comments.addNotificationBlock { changes in
+            if case let .update(_, deletions, insertions, modifications) = changes {
                 handler(deletions, insertions, modifications)
-            case .error(let error):
-                break
             }
         }
     }

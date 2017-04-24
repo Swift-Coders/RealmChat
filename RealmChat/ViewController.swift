@@ -23,7 +23,6 @@ class ViewController: SLKTextViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
         self.navigationItem.title = "Comments"
         
@@ -50,15 +49,15 @@ class ViewController: SLKTextViewController {
             }
         }
         
-        RealmManager.shared.observeComments { [unowned self] deletions, insertions, modifications in
-            self.tableView.beginUpdates()
-            self.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
-            self.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
-            self.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) }, with: .none)
-            self.tableView.endUpdates()
+        RealmManager.shared.observeComments { [unowned tableView] deletions, insertions, modifications in
+            tableView.beginUpdates()
+            tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+            tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+            tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) }, with: .none)
+            tableView.endUpdates()
             
-            if let row = insertions.first {
-                self.tableView.scrollToRow(at: IndexPath(row: row, section: 0), at: .bottom, animated: true)
+            if let row = insertions.last {
+                tableView.scrollToRow(at: IndexPath(row: row, section: 0), at: .bottom, animated: true)
             }
         }
     }
