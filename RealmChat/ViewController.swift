@@ -41,30 +41,6 @@ class ViewController: SLKTextViewController {
         textView.layer.borderWidth = 0
         textView.placeholder = "Type a message"
         
-        addNotifications()
-    }
-    
-}
-
-// MARK: - Data
-extension ViewController {
-    
-    func addNotifications() {
-        FIRAuth.auth()?.signInAnonymously { user, error in
-            guard let _ = user else { return }
-            FirebaseManager.shared.observeComments { type, id, data in
-                switch type {
-                case .childAdded:
-                    let text = data["text"] as! String
-                    let senderId = data["senderId"] as! String
-                    RealmManager.shared.appendComment(id: id, text: text, senderId: senderId)
-                case .childRemoved:
-                    RealmManager.shared.removeComment(id: id)
-                default: break
-                }
-            }
-        }
-        
         RealmManager.shared.observeComments { [unowned tableView] deletions, insertions, modifications in
             tableView.beginUpdates()
             tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
