@@ -1,5 +1,5 @@
 # RealmChat
-Chat app built with Realm
+Chat app built with Realm and Firebase
 
 ## Installation
 
