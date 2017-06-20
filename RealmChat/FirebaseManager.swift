@@ -14,14 +14,14 @@ class FirebaseManager {
     
     static let shared = FirebaseManager()
     
-    private lazy var commentRef: FIRDatabaseReference = FIRDatabase.database().reference().child("comments")
+    private lazy var commentRef: DatabaseReference = Database.database().reference().child("comments")
     
-    private var commentAddedRefHandle: FIRDatabaseHandle?
-    private var commentRemovedRefHandle: FIRDatabaseHandle?
+    private var commentAddedRefHandle: DatabaseHandle?
+    private var commentRemovedRefHandle: DatabaseHandle?
     
     init() {
-        FIRApp.configure()
-        FIRAuth.auth()?.signInAnonymously { user, error in
+        FirebaseApp.configure()
+        Auth.auth().signInAnonymously { user, error in
             guard let _ = user else { return }
             FirebaseManager.shared.observeComments { type, id, data in
                 switch type {
@@ -37,7 +37,7 @@ class FirebaseManager {
         }
     }
     
-    func observeComments(handler: @escaping (FIRDataEventType, String, [String: AnyObject]) -> Void) {
+    func observeComments(handler: @escaping (DataEventType, String, [String: AnyObject]) -> Void) {
         commentAddedRefHandle = commentRef.observe(.childAdded, with: { snapshot in
             guard let data = snapshot.value as? [String: AnyObject] else { return }
             handler(.childAdded, snapshot.key, data)

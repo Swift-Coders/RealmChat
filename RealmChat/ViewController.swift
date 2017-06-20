@@ -65,7 +65,7 @@ extension ViewController {
     
     override func didPressRightButton(_ sender: Any?) {
         textView.refreshFirstResponder()
-        guard let text = textView.text, let senderId = FIRAuth.auth()?.currentUser?.uid else { return }
+        guard let text = textView.text, let senderId = Auth.auth().currentUser?.uid else { return }
         FirebaseManager.shared.postComment(senderId: senderId, text: text)
         super.didPressRightButton(sender)
     }
