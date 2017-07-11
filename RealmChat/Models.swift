@@ -16,6 +16,10 @@ final class Comment: Object {
     dynamic var id = NSUUID().uuidString
     dynamic var text = ""
     dynamic var senderId = ""
+    dynamic var state: State = .pending
+    @objc enum State: Int {
+        case pending, success, failure
+    }
     
     // "https://api.adorable.io/avatars/100/\(id).png"
     
